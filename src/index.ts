@@ -11,12 +11,14 @@ import fetchSessionToken from "./extraction.js";
  * @param {string} [options.search_query=""] - The search query to filter reviews.
  * @param {string} [options.pages="max"] - The number of pages to scrape (default is "max"). If set to a number, it will scrape that number of pages (results will be 10 * pages) or until there are no more reviews.
  * @param {boolean} [options.clean=false] - Whether to return clean reviews or not.
+ * @param {boolean} [options.experimental=false] - Whether to use the experimental BoqProxy endpoint.
+ * @param {Record<string, string>} [options.cookies] - Cookies containing __Secure-1PSID for authentication (only used for listugcposts/experimental=false).
  * @returns {Promise<Array|number>} - Returns an array of reviews or 0 if no reviews are found.
  * @throws {Error} - Throws an error if the URL is not provided or if fetching reviews fails.
  */
 export async function scraper(
     url: string,
-    { sort_type = "relevent", search_query = "", pages = "max", clean = false } = {}
+    { sort_type = "relevent", search_query = "", pages = "max", clean = false, experimental = false, cookies = undefined }: any = {}
 ) {
     try {
         validateParams(url, sort_type, pages, clean);
@@ -29,7 +31,19 @@ export async function scraper(
         }
         const placeId = m[1]?.[1] ? m[1][1] : m[0][1];
 
-        const sessionToken = await fetchSessionToken(placeId);
+        if (experimental) {
+            if (search_query) {
+                console.warn("\x1b[33mWarning: The experimental GetLocalBoqProxy endpoint does not support search_query. The query will be ignored.\x1b[0m");
+            }
+            const { paginateBoqReviews } = await import("./experimental/utils.js");
+            const reviews = await paginateBoqReviews(placeId, sortValue, pages, clean);
+            if (!reviews || (Array.isArray(reviews) && reviews.length === 0)) {
+                return 0;
+            }
+            return reviews;
+        }
+
+        const sessionToken = await fetchSessionToken(placeId, cookies);
 
         if (!sessionToken) {
             throw new Error("Could not fetch session token.");
@@ -37,7 +51,7 @@ export async function scraper(
 
         await new Promise(r => setTimeout(r, 2000));
 
-        const reviews = await paginateReviews(placeId, sortValue, pages, search_query, clean, sessionToken);
+        const reviews = await paginateReviews(placeId, sortValue, pages, search_query, clean, sessionToken, cookies);
 
         if (!reviews || (Array.isArray(reviews) && reviews.length === 0)) {
             return 0;

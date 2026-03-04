@@ -36,7 +36,14 @@ Install with yarn
 ```ts
 import { scraper } from "google-maps-review-scraper"
 
-const reviews = await scraper("url", { sort_type: "sort_type", search_query: "search_query", pages: "pages", clean: false })
+const reviews = await scraper("url", { 
+    sort_type: "relevent", 
+    search_query: "search_query", 
+    pages: "pages", 
+    clean: false, 
+    experimental: false, 
+    cookies: { "__Secure-1PSID": "...", "__Secure-1PSIDTS": "..." } 
+})
 ```
 
 ### Arguments
@@ -50,8 +57,12 @@ const reviews = await scraper("url", { sort_type: "sort_type", search_query: "se
 
 `clean` - `boolean`: Whether to return a cleaned output or not. Defaults to false.
 
+`experimental` - `boolean`: Whether to use the experimental `GetLocalBoqProxy` endpoint instead of the default `listugcposts` endpoint. Defaults to false. Note that **search queries are completely ignored** when this is enabled!
+
+`cookies` - `object`: Optional object containing `__Secure-1PSID` and `__Secure-1PSIDTS` cookies for authentication. Only used when calling the default `listugcposts` endpoint.
+
 > [!NOTE]
-> `sort_type`, `search_query` and `pages` are all optional paremeters which should be included within the object literals (the curly brackets).
+> `sort_type`, `search_query`, `pages`, `clean`, `experimental`, and `cookies` are all optional paremeters which should be included within the object literals (the curly brackets).
 
 ### Returns
 

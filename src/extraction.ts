@@ -1,13 +1,13 @@
-import { createClient } from "./client.js";
+import type { Impit } from "impit";
 
 /**
  * Main function to fetch data for a place.
  * @param {string} placeId - The CID (e.g., 0x3ae2575b18d322ff:0x3c53adf6ab35b12b)
+ * @param {Impit} client - The hydrated client instance.
  */
-export default async function fetchSessionToken(placeId: string, cookies?: Record<string, string>) {
+export default async function fetchSessionToken(placeId: string, client: Impit) {
     try {
         // fetch page
-        const client = createClient(cookies);
         const sourceUrl = `https://maps.google.com/maps/place/${placeId}?hl=en&gl=US`;
         const sourceRes = await client.fetch(sourceUrl);
         const html = await sourceRes.text();

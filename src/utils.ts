@@ -1,4 +1,4 @@
-import { createClient } from "./client.js";
+import type { Impit } from "impit";
 import listugcposts from "./listugcposts.js";
 import { SortEnum } from "./types.js";
 import parser from "./parser.js";
@@ -41,11 +41,10 @@ export function validateParams(url: string, sort_type: string, pages: string | n
  * @param {1 | 2 | 3 | 4} sort - The type of sorting for the reviews (1: Most Relevant, 2: Newest, 3: Highest Rating, 4: Lowest Rating).
  * @param {string} nextPage - The next page token for pagination.
  * @param {string} search_query - The search query to filter reviews.
- * @param {string} sessionToken - The session token for authentication.
+ * @param {Impit} client - The hydrated client instance.
  */
-export async function fetchReviews(placeId: string, sort: 1 | 2 | 3 | 4, nextPage = "", search_query = "", sessionToken: string, cookies?: Record<string, string>) {
+export async function fetchReviews(placeId: string, sort: 1 | 2 | 3 | 4, nextPage = "", search_query = "", sessionToken: string, client: Impit) {
     const apiUrl = listugcposts(placeId, sort, nextPage, search_query, sessionToken);
-    const client = createClient(cookies);
     const response = await client.fetch(apiUrl);
 
     if (!response.ok) {
@@ -81,9 +80,9 @@ export async function paginateReviews(
     search_query: string,
     clean: boolean,
     sessionToken: string,
-    cookies?: Record<string, string>
+    client: Impit
 ) {
-    const initialData = await fetchReviews(placeId, sort, "", search_query, sessionToken, cookies);
+    const initialData = await fetchReviews(placeId, sort, "", search_query, sessionToken, client);
 
     if (!initialData || !Array.isArray(initialData[2]) || initialData[2].length === 0) {
         return [];
@@ -101,7 +100,7 @@ export async function paginateReviews(
 
     while (nextToken && pageCount < max) {
         try {
-            const data = await fetchReviews(placeId, sort, nextToken, search_query, sessionToken, cookies);
+            const data = await fetchReviews(placeId, sort, nextToken, search_query, sessionToken, client);
 
             if (data[2] && data[2].length > 0) {
                 allReviews.push(...data[2]);

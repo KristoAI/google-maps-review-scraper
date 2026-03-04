@@ -1,11 +1,9 @@
-import { createClient } from "../client.js";
+import type { Impit } from "impit";
 import getBoqUrl from "./boqEndpoint.js";
 import boqParser from "./boqParser.js";
 
-export async function fetchBoqReviews(placeId: string, sort: 1 | 2 | 3 | 4, paginationToken = "") {
+export async function fetchBoqReviews(placeId: string, sort: 1 | 2 | 3 | 4, client: Impit, paginationToken = "") {
     const apiUrl = getBoqUrl(placeId, sort, paginationToken);
-    const client = createClient();
-
     const response = await client.fetch(apiUrl);
 
     if (!response.ok) {
@@ -28,9 +26,10 @@ export async function paginateBoqReviews(
     placeId: string,
     sort: 1 | 2 | 3 | 4,
     pages: string | number,
-    clean: boolean
+    clean: boolean,
+    client: Impit
 ) {
-    const initialData = await fetchBoqReviews(placeId, sort, "");
+    const initialData = await fetchBoqReviews(placeId, sort, client, "");
 
     // Check if valid data
     if (!initialData || !Array.isArray(initialData) || initialData.length < 2) {
@@ -58,7 +57,7 @@ export async function paginateBoqReviews(
 
     while (nextToken && allReviews.length < maxReviews) {
         try {
-            const data = await fetchBoqReviews(placeId, sort, nextToken);
+            const data = await fetchBoqReviews(placeId, sort, client, nextToken);
 
             const mPayload = data[1];
             if (!mPayload || !mPayload[10]) break;

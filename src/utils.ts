@@ -1,4 +1,4 @@
-import { client } from "./client.js";
+import { createClient } from "./client.js";
 import listugcposts from "./listugcposts.js";
 import { SortEnum } from "./types.js";
 import parser from "./parser.js";
@@ -43,8 +43,9 @@ export function validateParams(url: string, sort_type: string, pages: string | n
  * @param {string} search_query - The search query to filter reviews.
  * @param {string} sessionToken - The session token for authentication.
  */
-export async function fetchReviews(placeId: string, sort: 1 | 2 | 3 | 4, nextPage = "", search_query = "", sessionToken: string) {
+export async function fetchReviews(placeId: string, sort: 1 | 2 | 3 | 4, nextPage = "", search_query = "", sessionToken: string, cookies?: Record<string, string>) {
     const apiUrl = listugcposts(placeId, sort, nextPage, search_query, sessionToken);
+    const client = createClient(cookies);
     const response = await client.fetch(apiUrl);
 
     if (!response.ok) {
@@ -79,9 +80,10 @@ export async function paginateReviews(
     pages: string | number,
     search_query: string,
     clean: boolean,
-    sessionToken: string
+    sessionToken: string,
+    cookies?: Record<string, string>
 ) {
-    const initialData = await fetchReviews(placeId, sort, "", search_query, sessionToken);
+    const initialData = await fetchReviews(placeId, sort, "", search_query, sessionToken, cookies);
 
     if (!initialData || !Array.isArray(initialData[2]) || initialData[2].length === 0) {
         return [];
@@ -99,7 +101,7 @@ export async function paginateReviews(
 
     while (nextToken && pageCount < max) {
         try {
-            const data = await fetchReviews(placeId, sort, nextToken, search_query, sessionToken);
+            const data = await fetchReviews(placeId, sort, nextToken, search_query, sessionToken, cookies);
 
             if (data[2] && data[2].length > 0) {
                 allReviews.push(...data[2]);

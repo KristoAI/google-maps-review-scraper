@@ -22,25 +22,24 @@ The `reqpld` parameter accepts a rigidly structured JSON array. The structure sh
 For the first request to retrieve reviews for a Place CID, the payload looks like this:
 
 ```json
-[null, [null, null, null, null, null, null, null, null, null, [null, 1, null, null, null, null, null, null, null, 3, null, ["0x3ae3ac11ba10554f:0x7a9aff673731a301"]]]]
+[null, [null, null, null, null, null, null, null, null, null, [null, 1, null, null, null, null, null, null, null, 10, null, ["0x3ae3ac11ba10554f:0x7a9aff673731a301"]]]]
 ```
 
 - Index `1` -> `[9]`: The inner array governing the list retrieval.
-  - Index `1` -> `[9][1]`: Operation type (`1`).
-  - Index `1` -> `[9][9]`: **Sort Order** integer (`1` = Relevant, `2` = Newest, `3` = Highest, `4` = Lowest).
+  - Index `1` -> `[9][1]`: **Sort Order** integer (`1` = Relevant, `2` = Newest, `3` = Highest, `4` = Lowest).
+  - Index `1` -> `[9][9]`: **Fetch Limit** integer (determines how many reviews return in the initial fetch. E.g., `10`).
   - Index `1` -> `[9][11]`: Array containing the **Place CID** string.
-
-The initial request always returns exactly **3 reviews**, summarizing the Google Search Knowledge Panel content.
 
 ### Paginated Request Payload
 
-To retrieve more reviews (which return in batches of 20), the sort order is dropped and a pagination token is inserted.
+To retrieve more reviews, a pagination token is inserted. Note that the sort order must still be included in paginated requests!
 
 ```json
 [null, [null, null, null, null, null, null, null, null, null, [null, 1, null, null, null, null, null, null, null, null, null, ["0x3ae3ac11ba10554f:0x7a9aff673731a301"], null, null, null, null, null, null, null, "PAGINATION_TOKEN_HERE"]]]
 ```
 
-- Index `1` -> `[9][9]`: The sort order becomes `null`.
+- Index `1` -> `[9][1]`: The **Sort Order** (must match the initial request).
+- Index `1` -> `[9][9]`: The fetch limit becomes `null`.
 - Index `1` -> `[9][19]`: The **Pagination Token** string (extracted from the response data at `[1][10][6]`).
 
 ## Output Differences from listugcposts

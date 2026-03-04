@@ -9,11 +9,11 @@ export default function getBoqUrl(placeId: string, sortOrder: 1 | 2 | 3 | 4, pag
     let reqpld: any[];
 
     if (!paginationToken) {
-        // Initial request includes the sort order
-        reqpld = [null, [null, null, null, null, null, null, null, null, null, [null, 1, null, null, null, null, null, null, null, sortOrder, null, [placeId]]]];
+        // Initial request (we pass '10' as the limit instead of 3 to speed up scraping)
+        reqpld = [null, [null, null, null, null, null, null, null, null, null, [null, sortOrder, null, null, null, null, null, null, null, 10, null, [placeId]]]];
     } else {
-        // Paginated requests drop the sort order and include the token at index 19
-        reqpld = [null, [null, null, null, null, null, null, null, null, null, [null, 1, null, null, null, null, null, null, null, null, null, [placeId], null, null, null, null, null, null, null, paginationToken]]];
+        // Paginated requests
+        reqpld = [null, [null, null, null, null, null, null, null, null, null, [null, sortOrder, null, null, null, null, null, null, null, null, null, [placeId], null, null, null, null, null, null, null, paginationToken]]];
     }
 
     const payloadStr = JSON.stringify(reqpld);

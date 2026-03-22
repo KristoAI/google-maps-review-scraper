@@ -66,3 +66,5 @@ export async function scraper(
         return 0;
     }
 }
+
+export { rotateCookies as rotate } from "./rotate.js";

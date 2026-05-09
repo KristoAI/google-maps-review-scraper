@@ -70,10 +70,10 @@ export async function rotateCookies(psid: string, psidts: string): Promise<strin
 
     if (newPsidtsCookie) {
       return newPsidtsCookie.value;
-    } else {
-      console.warn("[RotateCookies] Success response received, but no new __Secure-1PSIDTS cookie found in the jar.");
-      return null;
     }
+
+    console.warn("[RotateCookies] Success response received, but no new __Secure-1PSIDTS cookie found in the jar.");
+    return null;
 
   } catch (error) {
     console.error(`[RotateCookies] Network or execution error:`, error);

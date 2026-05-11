@@ -11,9 +11,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/YasogaN/google-maps-review-scraper"
+    "url": "https://github.com/YasogaN/google-maps-review-scraper"
   },
-  "homepage": "github.com/YasogaN/google-maps-review-scraper",
+  "homepage": "https://github.com/YasogaN/google-maps-review-scraper",
   "author": "YasogaN",
   "license": "MIT",
   "files": [

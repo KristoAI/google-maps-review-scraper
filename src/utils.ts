@@ -6,7 +6,7 @@ import parser from "./parser.js";
 /**
  * Validates parameters for the Google Maps review scraper.
  * @param {string} url - The URL of the Google Maps location to scrape reviews from.
- * @param {string} sort_type - The type of sorting for the reviews ("relevent", "newest", "highest_rating", "lowest_rating").
+ * @param {string} sort_type - The type of sorting for the reviews ("relevant", "newest", "highest_rating", "lowest_rating").
  * @param {string | number} pages - The number of pages to scrape (default is "max"). If set to a number, it will scrape that number of pages (results will be 10 * pages) or until there are no more reviews.
  * @param {boolean} clean - Whether to return clean reviews or not.
  */

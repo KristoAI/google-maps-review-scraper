@@ -8,7 +8,7 @@ import { createClient } from "./client.js";
  *
  * @param {string} url - The URL of the Google Maps location to scrape reviews from.
  * @param {Object} options - The options for scraping.
- * @param {string} [options.sort_type="relevent"] - The type of sorting for the reviews ("relevent", "newest", "highest_rating", "lowest_rating").
+ * @param {string} [options.sort_type="relevant"] - The type of sorting for the reviews ("relevant", "newest", "highest_rating", "lowest_rating").
  * @param {string} [options.search_query=""] - The search query to filter reviews.
  * @param {string} [options.pages="max"] - The number of pages to scrape (default is "max"). If set to a number, it will scrape that number of pages (results will be 10 * pages) or until there are no more reviews.
  * @param {boolean} [options.clean=false] - Whether to return clean reviews or not.
@@ -19,7 +19,7 @@ import { createClient } from "./client.js";
  */
 export async function scraper(
     url: string,
-    { sort_type = "relevent", search_query = "", pages = "max", clean = false, experimental = false, cookies = undefined }: any = {}
+    { sort_type = "relevant", search_query = "", pages = "max", clean = false, experimental = false, cookies = undefined }: any = {}
 ) {
     try {
         validateParams(url, sort_type, pages, clean);

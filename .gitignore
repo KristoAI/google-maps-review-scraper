@@ -25,9 +25,6 @@ web_modules/
 # vscode
 .vscode
 
-#github 
-.github
-
 #tests
 test.js
 

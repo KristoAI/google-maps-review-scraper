@@ -44,13 +44,7 @@ jobs:
           node-version: "24"
           registry-url: "https://npm.pkg.github.com"
 
-      # --- 2. PUBLISH TO GITHUB PACKAGES ---
-      - name: Publish to GitHub Packages
-        run: pnpm publish --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # --- 3. CREATE GITHUB RELEASE ---
+      # --- 2. CREATE GITHUB RELEASE ---
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

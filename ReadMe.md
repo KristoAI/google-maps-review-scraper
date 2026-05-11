@@ -2,13 +2,12 @@
 
 <div align="center">
 
-![](https://img.shields.io/github/license/YasogaN/google-maps-review-scraper.svg?style=for-the-badge&color=blue) 
-![](https://img.shields.io/github/forks/YasogaN/google-maps-review-scraper.svg?style=for-the-badge) 
-![](https://img.shields.io/github/stars/YasogaN/google-maps-review-scraper.svg?style=for-the-badge) 
-![](https://img.shields.io/github/watchers/YasogaN/google-maps-review-scraper.svg?style=for-the-badge) 
-![](https://img.shields.io/github/issues/YasogaN/google-maps-review-scraper.svg?style=for-the-badge) 
-![](https://img.shields.io/github/languages/code-size/YasogaN/google-maps-review-scraper?style=for-the-badge) 
-
+![](https://img.shields.io/github/license/YasogaN/google-maps-review-scraper.svg?style=for-the-badge&color=blue)
+![](https://img.shields.io/github/forks/YasogaN/google-maps-review-scraper.svg?style=for-the-badge)
+![](https://img.shields.io/github/stars/YasogaN/google-maps-review-scraper.svg?style=for-the-badge)
+![](https://img.shields.io/github/watchers/YasogaN/google-maps-review-scraper.svg?style=for-the-badge)
+![](https://img.shields.io/github/issues/YasogaN/google-maps-review-scraper.svg?style=for-the-badge)
+![](https://img.shields.io/github/languages/code-size/YasogaN/google-maps-review-scraper?style=for-the-badge)
 
 ## Frameworks/Technologies
 
@@ -25,31 +24,35 @@ Install with npm
 ```bash
   npm install google-maps-review-scraper
 ```
+
 Install with yarn
+
 ```bash
   yarn add google-maps-review-scraper
 ```
+
 ---
 
 ## Usage/Examples
 
 ```ts
-import { scraper } from "google-maps-review-scraper"
+import { scraper } from "google-maps-review-scraper";
 
-const reviews = await scraper("url", { 
-    sort_type: "relevent", 
-    search_query: "search_query", 
-    pages: "pages", 
-    clean: false, 
-    experimental: false, 
-    cookies: { "__Secure-1PSID": "...", "__Secure-1PSIDTS": "..." } 
-})
+const reviews = await scraper("url", {
+  sort_type: "relevant",
+  search_query: "search_query",
+  pages: "pages",
+  clean: false,
+  experimental: false,
+  cookies: { "__Secure-1PSID": "...", "__Secure-1PSIDTS": "..." },
+});
 ```
 
 ### Arguments
-`url` - `string`: A google maps place url as explained [here](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md) 
 
-`sort_type` - `string`: The sort parameter (`"relevent"`, `"newest"`, `"highest_rating"`, `"lowest_rating"`). Defaults to `"relevent"`
+`url` - `string`: A google maps place url as explained [here](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md)
+
+`sort_type` - `string`: The sort parameter (`"relevant"`, `"newest"`, `"highest_rating"`, `"lowest_rating"`). Defaults to `"relevant"`
 
 `search_query` - `string`: Search query to search in reviews. Defaults to nothing.
 
@@ -80,7 +83,6 @@ All documentation related to API's and URL's used in this project can be found i
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/YasogaN/google-maps-review-scraper/blob/main/LICENSE) file for details.
 
-
 ### Summary of the MIT License
 
 The **MIT License** is a permissive open-source license that allows users significant freedom with minimal conditions.
@@ -97,6 +99,7 @@ The **MIT License** is a permissive open-source license that allows users signif
 - **Attribution**: You must include the original copyright notice and the MIT license text in any copies or substantial portions of the software.
 
 ### No Warranty:
+
 - The software is provided "as is," with no warranties or guarantees. The author is not liable for any damages arising from the use of the software.
 
 For full details, refer to the license text.
@@ -123,8 +126,8 @@ Thanks to Minh for helping keep the library maintained!
 
 ### Dependencies
 
- - [impit](https://github.com/apify/impit) by [@apify](https://github.com/apify)
- - [tough-cookie](https://github.com/salesforce/tough-cookie) by [@salesforce](https://github.com/salesforce)
+- [impit](https://github.com/apify/impit) by [@apify](https://github.com/apify)
+- [tough-cookie](https://github.com/salesforce/tough-cookie) by [@salesforce](https://github.com/salesforce)
 
 ---
 

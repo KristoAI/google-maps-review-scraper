@@ -65,7 +65,7 @@ const reviews = await scraper("url", {
 `cookies` - `object`: Optional object containing `__Secure-1PSID` and `__Secure-1PSIDTS` cookies for authentication. Only used when calling the default `listugcposts` endpoint.
 
 > [!NOTE]
-> `sort_type`, `search_query`, `pages`, `clean`, `experimental`, and `cookies` are all optional paremeters which should be included within the object literals (the curly brackets).
+> `sort_type`, `search_query`, `pages`, `clean`, `experimental`, and `cookies` are all optional parameters which should be included within the object literals (the curly brackets).
 
 ### Returns
 

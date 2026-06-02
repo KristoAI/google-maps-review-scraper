@@ -14,12 +14,29 @@ import { createClient } from "./client.js";
  * @param {boolean} [options.clean=false] - Whether to return clean reviews or not.
  * @param {boolean} [options.experimental=false] - Whether to use the experimental BoqProxy endpoint.
  * @param {Record<string, string>} [options.cookies] - Cookies containing __Secure-1PSID for authentication (only used for listugcposts/experimental=false).
+ * @param {string} [options.proxyUrl] - 
  * @returns {Promise<Array|number>} - Returns an array of reviews or 0 if no reviews are found.
  * @throws {Error} - Throws an error if the URL is not provided or if fetching reviews fails.
  */
 export async function scraper(
     url: string,
-    { sort_type = "relevant", search_query = "", pages = "max", clean = false, experimental = false, cookies = undefined }: any = {}
+    {
+        sort_type = "relevant",
+        search_query = "",
+        pages = "max",
+        clean = false,
+        experimental = false,
+        cookies = undefined,
+        proxyUrl = undefined,
+    }: {
+        sort_type?: string;
+        search_query?: string;
+        pages?: number | "max";
+        clean?: boolean;
+        experimental?: boolean;
+        cookies?: Record<string, string>;
+        proxyUrl?: string | undefined;
+    } = {}
 ) {
     try {
         validateParams(url, sort_type, pages, clean);
@@ -31,7 +48,7 @@ export async function scraper(
             throw new Error("Invalid URL");
         }
         const placeId = m[1]?.[1] ? m[1][1] : m[0][1];
-        const client = createClient(cookies);
+        const client = createClient({ proxy: proxyUrl, cookies: cookies });
 
         if (experimental) {
             if (search_query) {

@@ -34,7 +34,7 @@ export async function scraper(
         pages?: number | "max";
         clean?: boolean;
         experimental?: boolean;
-        cookies?: Record<string, string>;
+        cookies?: Record<string, string> | undefined;
         proxyUrl?: string | undefined;
     } = {}
 ) {

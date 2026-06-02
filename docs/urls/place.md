@@ -18,7 +18,7 @@ https://www.google.com/maps/place/
 
     eg: `The+White+House++United+States`
 
-- Second Level: `Latitude`, `Longitude` and `Zoom Level` sperated by commas (`,`), starting with the unicode character `U+0040` (`@`) and ending with the letter `z`.
+- Second Level: `Latitude`, `Longitude` and `Zoom Level` separated by commas (`,`), starting with the unicode character `U+0040` (`@`) and ending with the letter `z`.
 
     eg: `@38.8864874,-77.0377681,15z`
 
@@ -37,13 +37,13 @@ https://www.google.com/maps/place/[Place Name++Country Name]/@[Latitude],[Longit
 https://www.google.com/maps/place/The+White+House++United+States/@38.8864874,-77.0377681,15z/data=!4m6!3m5!1s0x89b7b7bcdecbb1df:0x715969d86d0b76bf!8m2!3d38.8976763!4d-77.0365298!16zL20vMDgxc3E
 ```
 
-## Protcol Buffer Data Breakdown
+## Protocol Buffer Data Breakdown
 1. `4m6` - message (6 blocks)
     1. `3m5` - message (5 blocks)
         1. `1s` - string: Hexadecimal string of Place ID (`Hex String 1`:`Hex String 2`)
         2. `8m2` - message (2 blocks)
             1. `3d` - double: Latitude
-            2. `4d` - double: Longitiude
+            2. `4d` - double: Longitude
         3. 2 possible cases:
             - If an MID is assigned to the place: `16z` - base64 (no padding): MID of the location
-            - If not: `16s` - string: unique identifer of the location created by google maps <span style="color:orange">[UNCERTAIN]</span>
+            - If not: `16s` - string: unique identifier of the location created by google maps <span style="color:orange">[UNCERTAIN]</span>

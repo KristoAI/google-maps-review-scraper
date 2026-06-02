@@ -8,7 +8,7 @@ https://www.google.com/maps/rpc/listugcposts
 
 ## Parameters
 
-- `authuser`: authernticated user id (`0`)
+- `authuser`: authenticated user id (`0`)
 
 - `hl`: language (`en`)
 
@@ -19,7 +19,7 @@ https://www.google.com/maps/rpc/listugcposts
 ## Protocol Buffer Data Breakdown
 
 1. `1m6` (or `1m7` if search query is present) - message
-    1. `1s` - string: `Hex String 1` and `Hex String 2` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protcol-buffer-data-breakdown) seperated by a colon (`:`)
+    1. `1s` - string: `Hex String 1` and `Hex String 2` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protocol-buffer-data-breakdown) separated by a colon (`:`)
     2. `3s` - string: Search Query (Only present if parent is `1m7`)
     3. `6m4` - message
         1. `4m1` - message

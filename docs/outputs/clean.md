@@ -33,7 +33,7 @@ Check [Reporting Issues](#reporting-issues) if you find any issues with this doc
         "location": {
             "friendly": "User friendly name of location",
             "lat": "Latitude when picture was taken",
-            "long": "Longitiude when picture was taken",
+            "long": "Longitude when picture was taken",
         },
         "caption": "Image caption" || null
     }
@@ -48,7 +48,7 @@ Check [Reporting Issues](#reporting-issues) if you find any issues with this doc
 } || null
 ```
 
-The above format should is self explanatory
+The above format is self-explanatory.
 
 # Reporting Issues
 

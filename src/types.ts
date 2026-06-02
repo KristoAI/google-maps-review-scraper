@@ -1,5 +1,4 @@
 export enum SortEnum {
-    "relevent" = 1,
     "relevant" = 1,
     "newest" = 2,
     "highest_rating" = 3,

@@ -14,7 +14,8 @@ import { createClient } from "./client.js";
  * @param {boolean} [options.clean=false] - Whether to return clean reviews or not.
  * @param {boolean} [options.experimental=false] - Whether to use the experimental BoqProxy endpoint.
  * @param {Record<string, string>} [options.cookies] - Cookies containing __Secure-1PSID for authentication (only used for listugcposts/experimental=false).
- * @param {string} [options.proxyUrl] - 
+ * @param {string} [options.proxyUrl] - Supports HTTP, HTTPS, SOCKS4 and SOCKS5 proxies.
+ * @param {boolean} [options.ignoreTls] - Ignore TLS errors such as invalid certificates. Works only if proxyUrl is set.
  * @returns {Promise<Array|number>} - Returns an array of reviews or 0 if no reviews are found.
  * @throws {Error} - Throws an error if the URL is not provided or if fetching reviews fails.
  */

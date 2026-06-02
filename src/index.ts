@@ -28,6 +28,7 @@ export async function scraper(
         experimental = false,
         cookies = undefined,
         proxyUrl = undefined,
+        ignoreTls = false,
     }: {
         sort_type?: string;
         search_query?: string;
@@ -36,6 +37,7 @@ export async function scraper(
         experimental?: boolean;
         cookies?: Record<string, string> | undefined;
         proxyUrl?: string | undefined;
+        ignoreTls?: boolean
     } = {}
 ) {
     try {
@@ -48,7 +50,7 @@ export async function scraper(
             throw new Error("Invalid URL");
         }
         const placeId = m[1]?.[1] ? m[1][1] : m[0][1];
-        const client = createClient({ proxy: proxyUrl, cookies: cookies });
+        const client = createClient({ proxy: { url: proxyUrl, tls: ignoreTls }, cookies: cookies });
 
         if (experimental) {
             if (search_query) {

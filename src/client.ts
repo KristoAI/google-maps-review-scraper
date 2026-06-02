@@ -2,7 +2,7 @@
 import { Impit } from "impit";
 import { CookieJar } from "tough-cookie";
 
-export function createClient({ proxy, cookies }: { proxy?: string | undefined; cookies?: Record<string, string> | undefined }) {
+export function createClient({ proxy, cookies }: { proxy?: { url: string | undefined, tls: boolean }; cookies?: Record<string, string> | undefined }) {
     const cookieJar = new CookieJar();
 
     if (cookies) {
@@ -23,6 +23,6 @@ export function createClient({ proxy, cookies }: { proxy?: string | undefined; c
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Site": "same-origin",
         },
-        ...(proxy !== undefined && { proxyUrl: proxy })
+        ...(proxy && proxy.url && { proxyUrl: proxy.url, ignoreTlsErrors: proxy.tls })
     });
 }

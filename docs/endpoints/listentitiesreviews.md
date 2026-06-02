@@ -6,7 +6,7 @@ https://www.google.com/maps/preview/review/listentitiesreviews
 ```
 
 ## Parameters
-- `authuser`: authernticated user id (`0`)
+- `authuser`: authenticated user id (`0`)
 
 - `hl`: language (`en`)
 
@@ -18,8 +18,8 @@ https://www.google.com/maps/preview/review/listentitiesreviews
 ## Protocol Buffer Data Breakdown
 
 1. `1m2` - message (2 blocks)
-    1. `1y` - 64bit integer: `Hex String 1` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protcol-buffer-data-breakdown) in decimal
-    2. `2y` - 64bit integer  `Hex String 2` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protcol-buffer-data-breakdown) in decimal
+    1. `1y` - 64bit integer: `Hex String 1` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protocol-buffer-data-breakdown) in decimal
+    2. `2y` - 64bit integer  `Hex String 2` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protocol-buffer-data-breakdown) in decimal
 
 2. `2m1`/`2m2` - message (1 or 2 blocks)
     1. `2i` - 32bit integer: Number of Results
@@ -39,6 +39,6 @@ https://www.google.com/maps/preview/review/listentitiesreviews
     2. `7e` - enum: 81
 
 
-[^2]:This message block was also present in [listugcposts](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/endpoints/listugcposts.md) endpoint. I couldnt find what the boolean fields meant as the api did not respond to changes made in these fields. If anyone has any idea what the following means, a pull request or issue would be welcome.
+[^2]:This message block was also present in [listugcposts](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/endpoints/listugcposts.md) endpoint. I couldn't find what the boolean fields meant as the api did not respond to changes made in these fields. If anyone has any idea what the following means, a pull request or issue would be welcome.
 
-[^3]:This message block seams to be a CSRF Token accompanied by a enumarative field. However any changes would result in a `400` Bad Request. It was also present in [listugcposts](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/endpoints/listugcposts.md) endpoint.
+[^3]:This message block seems to be a CSRF Token accompanied by an enumerative field. However any changes would result in a `400` Bad Request. It was also present in [listugcposts](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/endpoints/listugcposts.md) endpoint.

@@ -23,7 +23,7 @@ https://www.google.com/httpservice/web/PrivateLocalSearchUiDataService/GetLocalB
             2. `reqpld[1][9][1]` - enum: Sorting of results [^3]
             10. `reqpld[1][9][9]` - int: Number of results per page (Fetch Limit) [^4]
             12. `reqpld[1][9][11]` - array
-                1. `reqpld[1][9][11][0]` - string: `Hex String 1` and `Hex String 2` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protcol-buffer-data-breakdown) seperated by a colon (`:`)
+                1. `reqpld[1][9][11][0]` - string: `Hex String 1` and `Hex String 2` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protocol-buffer-data-breakdown) separated by a colon (`:`)
             20. `reqpld[1][9][19]` - string: Base 64 encoded data of page number [^5]
 
 [^1]: Other parameters like `channel`, `client`, `sca_esv`, `hs`, and `opi` are often present in browser requests for telemetry/anti-abuse tracking, but the endpoint functions perfectly without them.

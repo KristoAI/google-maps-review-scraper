@@ -75,7 +75,7 @@ const reviews = await scraper("url", {
 
 ## Documentation of API's/URL's used
 
-All documentation related to API's and URL's used in this project can be found in the [docs](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/) folder divided into endpoints for API's and urls for URL's. Note that everything included here was based on my reasearch, so errors could be present. A pull request is always welcome (see [contributing](#contributing))
+All documentation related to API's and URL's used in this project can be found in the [docs](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/) folder divided into endpoints for API's and urls for URL's. Note that everything included here was based on my research, so errors could be present. A pull request is always welcome (see [contributing](#contributing))
 
 ---
 

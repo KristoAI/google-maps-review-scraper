@@ -1,4 +1,5 @@
 import type { ParsedReview } from "../types.js";
+import type { BoqParserReturn } from "./types.js";
 
 /**
  * Parses raw GetLocalBoqProxy review arrays into the standard ParsedReview format.
@@ -44,7 +45,7 @@ function _parseReview(review: unknown): ParsedReview | null {
  * @param {unknown} reviews - Array of review data from GetLocalBoqProxy.
  * @returns {ParsedReview[]} An array of parsed reviews.
  */
-export default function boqParser(reviews: unknown): ParsedReview[] {
+export default function boqParser(reviews: unknown): BoqParserReturn {
     if (!Array.isArray(reviews)) return [];
 
     const parsedReviews = reviews.map(_parseReview).filter((r): r is ParsedReview => r !== null);

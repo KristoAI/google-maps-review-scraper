@@ -2,10 +2,10 @@ import type { ParsedReview } from "../types.js";
 
 /**
  * Parses raw GetLocalBoqProxy review arrays into the standard ParsedReview format.
- * @param {any[][]} reviews - Array of review data from GetLocalBoqProxy.
+ * @param {unknown} reviews - Array of review data from GetLocalBoqProxy.
  * @returns {ParsedReview[]} An array of parsed reviews.
  */
-function _parseReview(review: any): ParsedReview | null {
+function _parseReview(review: unknown): ParsedReview | null {
     if (!review || !Array.isArray(review)) return null;
 
     const images = Array.isArray(review[13]) ? review[13].map((imgData: any) => ({
@@ -41,10 +41,10 @@ function _parseReview(review: any): ParsedReview | null {
 
 /**
  * Parses raw GetLocalBoqProxy review arrays into the standard ParsedReview format.
- * @param {any[][]} reviews - Array of review data from GetLocalBoqProxy.
+ * @param {unknown} reviews - Array of review data from GetLocalBoqProxy.
  * @returns {ParsedReview[]} An array of parsed reviews.
  */
-export default function boqParser(reviews: any[][]): ParsedReview[] {
+export default function boqParser(reviews: unknown): ParsedReview[] {
     if (!Array.isArray(reviews)) return [];
 
     const parsedReviews = reviews.map(_parseReview).filter((r): r is ParsedReview => r !== null);

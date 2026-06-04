@@ -35,3 +35,13 @@ type JsonArray = JsonValue[];
 export interface JsonObject {
     [key: string]: JsonValue;
 };
+
+export interface ProxyConfig {
+    url: string | undefined,
+    tls?: boolean
+}
+
+export interface HTTPClient {
+    proxy: ProxyConfig
+    cookies?: Record<string, string> | undefined
+}

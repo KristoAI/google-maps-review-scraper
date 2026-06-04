@@ -32,6 +32,6 @@ type JsonValue =
 
 type JsonArray = JsonValue[];
 
-export type JsonObject = {
+export interface JsonObject {
     [key: string]: JsonValue;
 };

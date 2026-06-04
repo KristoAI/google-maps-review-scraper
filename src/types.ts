@@ -56,9 +56,9 @@ export interface SessionToken {
 
 export interface ListUgcPosts {
     placeId: string,
-    so: 1 | 2 | 3 | 4,
-    pg: string
-    sq: string
+    sortOrder: 1 | 2 | 3 | 4,
+    page: string
+    searchQuery: string
     sessionToken: string,
 }
 
@@ -70,4 +70,20 @@ export interface RotateClientReturn {
 export interface RotateCookies {
     psid: string,
     psidts: string
+}
+
+export interface Validate {
+    url: string,
+    sort_type: string,
+    pages: string | number,
+    clean: boolean
+}
+
+export interface Reviews extends ListUgcPosts {
+    client: Impit
+}
+
+export interface Paginate extends Omit<Reviews, 'page'> {
+    clean: boolean
+    pages: number | "max"
 }

@@ -1,6 +1,5 @@
-import type { Impit } from "impit";
 import listugcposts from "./listugcposts.js";
-import { SortEnum } from "./types.js";
+import { SortEnum, type JsonObject, type Paginate, type ParsedReview, type Reviews, type Validate } from "./types.js";
 import parser from "./parser.js";
 
 /**
@@ -10,7 +9,7 @@ import parser from "./parser.js";
  * @param {string | number} pages - The number of pages to scrape (default is "max"). If set to a number, it will scrape that number of pages (results will be 10 * pages) or until there are no more reviews.
  * @param {boolean} clean - Whether to return clean reviews or not.
  */
-export function validateParams(url: string, sort_type: string, pages: string | number, clean: boolean) {
+export function validateParams({ url, sort_type, pages, clean }: Validate) {
     try {
         const parsedUrl = new URL(url);
         // Google Maps URLs can be google.com/maps/place/ or maps.app.goo.gl
@@ -38,13 +37,13 @@ export function validateParams(url: string, sort_type: string, pages: string | n
 /**
  * Fetches and handles the XSSI security prefix.
  * @param {string} placeId - The CID (e.g., 0x3ae2575b18d322ff:0x3c53adf6ab35b12b)
- * @param {1 | 2 | 3 | 4} sort - The type of sorting for the reviews (1: Most Relevant, 2: Newest, 3: Highest Rating, 4: Lowest Rating).
- * @param {string} nextPage - The next page token for pagination.
+ * @param {1 | 2 | 3 | 4} sortOrder - The type of sorting for the reviews (1: Most Relevant, 2: Newest, 3: Highest Rating, 4: Lowest Rating).
+ * @param {string} nextPage - The page token for pagination.
  * @param {string} search_query - The search query to filter reviews.
  * @param {Impit} client - The hydrated client instance.
  */
-export async function fetchReviews(placeId: string, sort: 1 | 2 | 3 | 4, nextPage = "", search_query = "", sessionToken: string, client: Impit) {
-    const apiUrl = listugcposts(placeId, sort, nextPage, search_query, sessionToken);
+export async function fetchReviews({ placeId, sortOrder, page, searchQuery, sessionToken, client }: Reviews): Promise<JsonObject> {
+    const apiUrl = listugcposts({ placeId, sortOrder, page, searchQuery, sessionToken });
     const response = await client.fetch(apiUrl);
 
     if (!response.ok) {
@@ -73,16 +72,8 @@ export async function fetchReviews(placeId: string, sort: 1 | 2 | 3 | 4, nextPag
  * @param {boolean} clean - Whether to return clean reviews or not.
  * @param {string} sessionToken - The session token for authentication.
  */
-export async function paginateReviews(
-    placeId: string,
-    sort: 1 | 2 | 3 | 4,
-    pages: string | number,
-    search_query: string,
-    clean: boolean,
-    sessionToken: string,
-    client: Impit
-) {
-    const initialData = await fetchReviews(placeId, sort, "", search_query, sessionToken, client);
+export async function paginateReviews({ placeId, sortOrder, pages, searchQuery, sessionToken, client, clean }: Paginate): Promise<ParsedReview[] | unknown> {
+    const initialData = await fetchReviews({ placeId, sortOrder, page: "", searchQuery, sessionToken, client });
 
     if (!initialData || !Array.isArray(initialData[2]) || initialData[2].length === 0) {
         return [];
@@ -100,7 +91,9 @@ export async function paginateReviews(
 
     while (nextToken && pageCount < max) {
         try {
-            const data = await fetchReviews(placeId, sort, nextToken, search_query, sessionToken, client);
+            const data = await fetchReviews({ placeId, sortOrder, page: nextToken, searchQuery, sessionToken, client });
+
+            if (!Array.isArray(data)) break;
 
             if (data[2] && data[2].length > 0) {
                 allReviews.push(...data[2]);

@@ -1,7 +1,7 @@
 import getBoqUrl from "./boqEndpoint.js";
 import boqParser from "./boqParser.js";
 import type { BoqPaginate, BoqReviews } from "./types.js";
-import type { JsonObject } from "../types.js"
+import type { JsonObject, ParsedReview } from "../types.js"
 
 /**
  * Fetches a single page of Google Maps reviews using the experimental BOQ (Backend Query) endpoint.
@@ -57,7 +57,7 @@ export async function fetchBoqReviews({ placeId, sortOrder, client, paginationTo
  * @returns An array of reviews — either raw nested arrays (if `clean` is `false`) or parsed review objects (if `clean` is `true`).
  *          Returns an empty array if no valid data is found or if an error occurs during pagination.
  */
-export async function paginateBoqReviews({ placeId, sortOrder, pages, clean, client }: BoqPaginate) {
+export async function paginateBoqReviews({ placeId, sortOrder, pages, clean, client }: BoqPaginate): Promise<ParsedReview[] | unknown> {
     const initialData = await fetchBoqReviews({ placeId, sortOrder, client });
 
     // Validate the structure of the initial response

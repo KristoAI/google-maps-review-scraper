@@ -1,34 +1,5 @@
+import { getPath, numberOrZero, stringOrDefault, stringOrEmpty, stringOrNull, valueOrNull } from "../sharedParser.js";
 import type { ParsedReview } from "../types.js";
-
-function getPath(value: unknown, path: number[]): unknown {
-    let current = value;
-    for (const index of path) {
-        if (!Array.isArray(current)) return undefined;
-        current = current[index];
-    }
-    return current;
-}
-
-function stringOrEmpty(value: unknown): string {
-    return typeof value === "string" ? value : "";
-}
-
-function stringOrDefault(value: unknown, fallback: string): string {
-    const text = stringOrEmpty(value);
-    return text.length > 0 ? text : fallback;
-}
-
-function stringOrNull(value: unknown): string | null {
-    return typeof value === "string" && value.length > 0 ? value : null;
-}
-
-function numberOrZero(value: unknown): number {
-    return typeof value === "number" ? value : 0;
-}
-
-function valueOrNull(value: unknown): unknown | null {
-    return value ?? null;
-}
 
 /**
  * Parses one raw GetLocalBoqProxy review array into the standard ParsedReview format.

@@ -5,7 +5,7 @@ import type { SessionToken } from "./types.js";
  * @param {string} placeId - The CID (e.g., 0x3ae2575b18d322ff:0x3c53adf6ab35b12b)
  * @param {Impit} client - The hydrated client instance.
  */
-export default async function fetchSessionToken({ placeId, client }: SessionToken) {
+export default async function fetchSessionToken({ placeId, client }: SessionToken): Promise<string | null> {
     try {
         // fetch page
         const sourceUrl = `https://maps.google.com/maps/place/${placeId}?hl=en&gl=US`;

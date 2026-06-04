@@ -3,7 +3,7 @@ import { Impit } from "impit";
 import { CookieJar } from "tough-cookie";
 import type { HTTPClient } from "./types.js";
 
-export function createClient({ proxy, cookies }: HTTPClient) {
+export function createClient({ proxy, cookies }: HTTPClient): Impit {
     const cookieJar = new CookieJar();
 
     if (cookies) {

@@ -21,3 +21,17 @@ export interface ParsedReview {
     source: string;
     response: { text: string | null; time: { published: any; last_edited: any } } | null;
 }
+
+type JsonValue =
+    | string
+    | number
+    | boolean
+    | null
+    | JsonObject
+    | JsonArray;
+
+type JsonArray = JsonValue[];
+
+export type JsonObject = {
+    [key: string]: JsonValue;
+};

@@ -1,6 +1,7 @@
-import type { Impit } from "impit";
 import getBoqUrl from "./boqEndpoint.js";
 import boqParser from "./boqParser.js";
+import type { BoqPaginate, BoqReviews } from "./types.js";
+import type { JsonObject } from "../types.js"
 
 /**
  * Fetches a single page of Google Maps reviews using the experimental BOQ (Backend Query) endpoint.
@@ -10,15 +11,15 @@ import boqParser from "./boqParser.js";
  * parses the response, and returns the raw deserialized data for further processing.
  *
  * @param placeId - The Google Maps Place ID to fetch reviews for.
- * @param sort - Sort order for reviews: `1` (Most Relevant), `2` (Newest), `3` (Highest Rating), `4` (Lowest Rating).
+ * @param sortOrder - Sort order for reviews: `1` (Most Relevant), `2` (Newest), `3` (Highest Rating), `4` (Lowest Rating).
  * @param client - The HTTP client instance (Impit) used to make the fetch request.
  * @param paginationToken - An optional pagination token (default: `""`) returned from a previous BOQ response
  *                          to retrieve the next page of reviews. Pass `""` for the first page.
  * @returns The parsed JSON payload from the BOQ endpoint.
  * @throws Will throw if the HTTP response is not OK or if no valid JSON data is found after stripping the prefix.
  */
-export async function fetchBoqReviews(placeId: string, sort: 1 | 2 | 3 | 4, client: Impit, paginationToken = "") {
-    const apiUrl = getBoqUrl(placeId, sort, paginationToken);
+export async function fetchBoqReviews({ placeId, sortOrder, client, paginationToken = "" }: BoqReviews): Promise<JsonObject> {
+    const apiUrl = getBoqUrl({ placeId, sortOrder, paginationToken });
     const response = await client.fetch(apiUrl);
 
     if (!response.ok) {
@@ -48,7 +49,7 @@ export async function fetchBoqReviews(placeId: string, sort: 1 | 2 | 3 | 4, clie
  * raw nested arrays into structured objects via `boqParser`.
  *
  * @param placeId - The Google Maps Place ID to fetch reviews for.
- * @param sort - Sort order for reviews: `1` (Most Relevant), `2` (Newest), `3` (Highest Rating), `4` (Lowest Rating).
+ * @param sortOrder - Sort order for reviews: `1` (Most Relevant), `2` (Newest), `3` (Highest Rating), `4` (Lowest Rating).
  * @param pages - Number of pages to fetch. Each page yields ~10 reviews. Use the string `"max"` to fetch all available pages.
  * @param clean - If `true`, raw nested review arrays are parsed into structured objects using `boqParser`.
  *                If `false`, the raw array data is returned as-is.
@@ -56,14 +57,8 @@ export async function fetchBoqReviews(placeId: string, sort: 1 | 2 | 3 | 4, clie
  * @returns An array of reviews — either raw nested arrays (if `clean` is `false`) or parsed review objects (if `clean` is `true`).
  *          Returns an empty array if no valid data is found or if an error occurs during pagination.
  */
-export async function paginateBoqReviews(
-    placeId: string,
-    sort: 1 | 2 | 3 | 4,
-    pages: string | number,
-    clean: boolean,
-    client: Impit
-) {
-    const initialData = await fetchBoqReviews(placeId, sort, client, "");
+export async function paginateBoqReviews({ placeId, sortOrder, pages, clean, client }: BoqPaginate) {
+    const initialData = await fetchBoqReviews({ placeId, sortOrder, client });
 
     // Validate the structure of the initial response
     // Expected shape: [number, [...reviews...], ...]
@@ -97,9 +92,12 @@ export async function paginateBoqReviews(
     // Paginate through subsequent pages
     while (nextToken && allReviews.length < maxReviews) {
         try {
-            const data = await fetchBoqReviews(placeId, sort, client, nextToken);
+            const data = await fetchBoqReviews({ placeId, sortOrder, client, paginationToken: nextToken });
 
             const mPayload = data[1];
+
+            if (!Array.isArray(mPayload)) break;
+
             if (!mPayload || !mPayload[10]) break;
 
             const mNode = mPayload[10];

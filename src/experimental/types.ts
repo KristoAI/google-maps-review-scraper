@@ -1,5 +1,4 @@
 import type { Impit } from "impit"
-import type { ParsedReview } from "../types.js"
 
 export interface BoqUrl {
   placeId: string,

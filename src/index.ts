@@ -10,7 +10,7 @@ import { createClient } from "./client.js";
  * @param {Object} options - The options for scraping.
  * @param {string} [options.sort_type="relevant"] - The type of sorting for the reviews ("relevant", "newest", "highest_rating", "lowest_rating").
  * @param {string} [options.search_query=""] - The search query to filter reviews.
- * @param {string} [options.pages="max"] - The number of pages to scrape (default is "max"). If set to a number, it will scrape that number of pages (results will be 10 * pages) or until there are no more reviews.
+ * @param {"max" | number} [options.pages="max"] - The number of pages to scrape (default is "max"). If set to a number, it will scrape that number of pages (results will be 10 * pages) or until there are no more reviews.
  * @param {boolean} [options.clean=false] - Whether to return clean reviews or not.
  * @param {boolean} [options.experimental=false] - Whether to use the experimental BoqProxy endpoint.
  * @param {Record<string, string>} [options.cookies] - Cookies containing __Secure-1PSID for authentication (only used for listugcposts/experimental=false).

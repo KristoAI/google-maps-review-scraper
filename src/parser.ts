@@ -1,7 +1,7 @@
 import type { ParsedReview } from "./types.js";
 
 /**
- * Parses an array of reviews and returns a minified JSON string.
+ * Parses an array of reviews and returns a array of typed reviews
  * @param {unknown} reviews - Array of review data wrappers.
  * @returns {ParsedReview[]} An array of the parsed reviews.
  */

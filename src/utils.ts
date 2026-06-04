@@ -38,8 +38,9 @@ export function validateParams({ url, sort_type, pages, clean }: Validate) {
  * Fetches and handles the XSSI security prefix.
  * @param {string} placeId - The CID (e.g., 0x3ae2575b18d322ff:0x3c53adf6ab35b12b)
  * @param {1 | 2 | 3 | 4} sortOrder - The type of sorting for the reviews (1: Most Relevant, 2: Newest, 3: Highest Rating, 4: Lowest Rating).
- * @param {string} nextPage - The page token for pagination.
- * @param {string} search_query - The search query to filter reviews.
+ * @param {string} page - The page token for pagination.
+ * @param {string} searchQuery - The search query to filter reviews.
+ * @param {string} sessionToken - The session token for authentication.
  * @param {Impit} client - The hydrated client instance.
  */
 export async function fetchReviews({ placeId, sortOrder, page, searchQuery, sessionToken, client }: Reviews): Promise<JsonObject> {
@@ -66,11 +67,12 @@ export async function fetchReviews({ placeId, sortOrder, page, searchQuery, sess
 /**
  * Paginates through reviews.
  * @param {string} placeId - The CID (e.g., 0x3ae2575b18d322ff:0x3c53adf6ab35b12b)
- * @param {1 | 2 | 3 | 4} sort - The type of sorting for the reviews (1: Most Relevant, 2: Newest, 3: Highest Rating, 4: Lowest Rating).
+ * @param {1 | 2 | 3 | 4} sortOrder - The type of sorting for the reviews (1: Most Relevant, 2: Newest, 3: Highest Rating, 4: Lowest Rating).
  * @param {string | number} pages - The number of pages to scrape (default is "max"). If set to a number, it will scrape that number of pages (results will be 10 * pages) or until there are no more reviews.
- * @param {string} search_query - The search query to filter reviews.
+ * @param {string} searchQuery - The search query to filter reviews.
  * @param {boolean} clean - Whether to return clean reviews or not.
  * @param {string} sessionToken - The session token for authentication.
+ * @param {Impit} client - The hydrated client instance.
  */
 export async function paginateReviews({ placeId, sortOrder, pages, searchQuery, sessionToken, client, clean }: Paginate): Promise<ParsedReview[] | unknown> {
     const initialData = await fetchReviews({ placeId, sortOrder, page: "", searchQuery, sessionToken, client });

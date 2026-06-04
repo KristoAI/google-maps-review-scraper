@@ -4,7 +4,7 @@ import type { RotateClientReturn, RotateCookies } from "./types.js";
 
 /**
  * Creates an Impit client configured for rotating Google cookies.
- * @param {Record<string, string>} [cookies] - Initial cookies to set in the cookie jar.
+ * @param {Record<string, string>} cookies - Initial cookies to set in the cookie jar.
  * @returns {RotateClientReturn} An object containing the configured Impit client and its CookieJar.
  */
 function createRotateClient(cookies: Record<string, string>): RotateClientReturn {

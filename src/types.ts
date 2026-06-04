@@ -1,4 +1,5 @@
-import type { Impit } from "impit";
+import { Impit } from "impit";
+import type { CookieJar } from "tough-cookie";
 
 export enum SortEnum {
     "relevent" = 1, // Maintaining backwards compatibility.
@@ -59,4 +60,14 @@ export interface ListUgcPosts {
     pg: string
     sq: string
     sessionToken: string,
+}
+
+export interface RotateClientReturn {
+    client: Impit,
+    cookieJar: CookieJar
+}
+
+export interface RotateCookies {
+    psid: string,
+    psidts: string
 }

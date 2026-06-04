@@ -1,12 +1,13 @@
 import { Impit } from "impit";
 import { CookieJar } from "tough-cookie";
+import type { RotateClientReturn, RotateCookies } from "./types.js";
 
 /**
  * Creates an Impit client configured for rotating Google cookies.
- * @param {Record<string, string>} [cookies] - Optional initial cookies to set in the cookie jar.
- * @returns {{ client: Impit, cookieJar: CookieJar }} An object containing the configured Impit client and its CookieJar.
+ * @param {Record<string, string>} [cookies] - Initial cookies to set in the cookie jar.
+ * @returns {RotateClientReturn} An object containing the configured Impit client and its CookieJar.
  */
-function createRotateClient(cookies?: Record<string, string>) {
+function createRotateClient(cookies: Record<string, string>): RotateClientReturn {
   const cookieJar = new CookieJar();
 
   if (cookies) {
@@ -41,7 +42,7 @@ function createRotateClient(cookies?: Record<string, string>) {
  * @param {string} psidts - The value of the __Secure-1PSIDTS cookie.
  * @returns {Promise<string | null>} A promise that resolves to the new __Secure-1PSIDTS cookie value if successful, otherwise null.
  */
-export async function rotateCookies(psid: string, psidts: string): Promise<string | null> {
+export async function rotateCookies({ psid, psidts }: RotateCookies): Promise<string | null> {
   const { client, cookieJar } = createRotateClient({
     "__Secure-1PSID": psid,
     "__Secure-1PSIDTS": psidts

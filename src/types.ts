@@ -1,4 +1,5 @@
 export enum SortEnum {
+    "relevent" = 1, // Maintaining backwards compatibility.
     "relevant" = 1,
     "newest" = 2,
     "highest_rating" = 3,

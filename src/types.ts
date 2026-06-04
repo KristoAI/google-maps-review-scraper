@@ -1,3 +1,5 @@
+import type { Impit } from "impit";
+
 export enum SortEnum {
     "relevent" = 1, // Maintaining backwards compatibility.
     "relevant" = 1,
@@ -44,4 +46,9 @@ export interface ProxyConfig {
 export interface HTTPClient {
     proxy: ProxyConfig
     cookies?: Record<string, string> | undefined
+}
+
+export interface SessionToken {
+    placeId: string,
+    client: Impit
 }

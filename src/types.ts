@@ -87,3 +87,16 @@ export interface Paginate extends Omit<Reviews, 'page'> {
     clean: boolean
     pages: number | "max"
 }
+
+export interface Scraper {
+    sort_type?: string;
+    search_query?: string;
+    pages?: number | "max";
+    clean?: boolean;
+    experimental?: boolean;
+    cookies?: Record<string, string> | undefined;
+    proxy?: {
+        proxyUrl?: string | undefined;
+        ignoreTls?: boolean;
+    }
+}

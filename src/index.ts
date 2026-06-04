@@ -1,4 +1,4 @@
-import { SortEnum } from "./types.js";
+import { SortEnum, type Scraper } from "./types.js";
 import { validateParams, paginateReviews } from "./utils.js";
 import fetchSessionToken from "./extraction.js";
 import { createClient } from "./client.js";
@@ -32,21 +32,10 @@ export async function scraper(
             proxyUrl = undefined,
             ignoreTls = false
         } = {}
-    }: {
-        sort_type?: string;
-        search_query?: string;
-        pages?: number | "max";
-        clean?: boolean;
-        experimental?: boolean;
-        cookies?: Record<string, string> | undefined;
-        proxy?: {
-            proxyUrl?: string | undefined;
-            ignoreTls?: boolean;
-        }
-    } = {}
+    }: Scraper = {}
 ) {
     try {
-        validateParams(url, sort_type, pages, clean);
+        validateParams({ url, sort_type, pages, clean });
 
         const sortValue = SortEnum[sort_type as keyof typeof SortEnum] as 1 | 2 | 3 | 4;
 
@@ -62,14 +51,14 @@ export async function scraper(
                 console.warn("\x1b[33mWarning: The experimental GetLocalBoqProxy endpoint does not support search_query. The query will be ignored.\x1b[0m");
             }
             const { paginateBoqReviews } = await import("./experimental/utils.js");
-            const reviews = await paginateBoqReviews(placeId, sortValue, pages, clean, client);
+            const reviews = await paginateBoqReviews({ placeId, sortOrder: sortValue, pages, clean, client });
             if (!reviews || (Array.isArray(reviews) && reviews.length === 0)) {
                 return 0;
             }
             return reviews;
         }
 
-        const sessionToken = await fetchSessionToken(placeId, client);
+        const sessionToken = await fetchSessionToken({ placeId, client });
 
         if (!sessionToken) {
             throw new Error("Could not fetch session token.");
@@ -77,7 +66,7 @@ export async function scraper(
 
         await new Promise(r => setTimeout(r, 2000));
 
-        const reviews = await paginateReviews(placeId, sortValue, pages, search_query, clean, sessionToken, client);
+        const reviews = await paginateReviews({ placeId, sortOrder: sortValue, pages, searchQuery: search_query, clean, sessionToken, client });
 
         if (!reviews || (Array.isArray(reviews) && reviews.length === 0)) {
             return 0;

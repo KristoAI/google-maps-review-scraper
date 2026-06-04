@@ -1,3 +1,5 @@
+import type { BoqUrl } from "./types.js";
+
 /**
  * Generates the URL for the GetLocalBoqProxy endpoint.
  * @param {string} placeId - The CID of the place.
@@ -5,8 +7,8 @@
  * @param {string} paginationToken - The base64 pagination token.
  * @returns {string} The full URL.
  */
-export default function getBoqUrl(placeId: string, sortOrder: 1 | 2 | 3 | 4, paginationToken = "") {
-    let reqpld: any[];
+export default function getBoqUrl({ placeId, sortOrder, paginationToken = "" }: BoqUrl): string {
+    let reqpld: unknown[]
 
     if (!paginationToken) {
         // Initial request (we pass '10' as the limit instead of 3 to speed up scraping)

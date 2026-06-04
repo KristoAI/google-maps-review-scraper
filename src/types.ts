@@ -11,7 +11,7 @@ export enum SortEnum {
 
 export interface ParsedReview {
     review_id: string;
-    time: { published: any; last_edited: any };
+    time: { published: unknown | null; last_edited: unknown | null };
     author: { name: string; profile_url: string; url: string; id: string };
     review: { rating: number; text: string | null; language: string | null };
     images: Array<{
@@ -22,10 +22,10 @@ export interface ParsedReview {
         caption: string | null;
     }> | null;
     source: string;
-    response: { text: string | null; time: { published: any; last_edited: any } } | null;
+    response: { text: string | null; time: { published: unknown | null; last_edited: unknown | null } } | null;
 }
 
-type JsonValue =
+export type JsonValue =
     | string
     | number
     | boolean
@@ -33,7 +33,7 @@ type JsonValue =
     | JsonObject
     | JsonArray;
 
-type JsonArray = JsonValue[];
+export type JsonArray = JsonValue[];
 
 export interface JsonObject {
     [key: string]: JsonValue;
@@ -57,8 +57,8 @@ export interface SessionToken {
 export interface ListUgcPosts {
     placeId: string,
     sortOrder: 1 | 2 | 3 | 4,
-    page: string
-    searchQuery: string
+    page?: string
+    searchQuery?: string
     sessionToken: string,
 }
 
@@ -75,11 +75,13 @@ export interface RotateCookies {
 export interface Validate {
     url: string,
     sort_type: string,
-    pages: string | number,
+    pages: number | "max",
     clean: boolean
 }
 
-export interface Reviews extends ListUgcPosts {
+export interface Reviews extends Omit<ListUgcPosts, 'page' | 'searchQuery'> {
+    page: string
+    searchQuery: string
     client: Impit
 }
 

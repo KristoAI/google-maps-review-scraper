@@ -13,7 +13,7 @@ export interface BoqReviews extends BoqUrl {
 export interface BoqPaginate {
   placeId: string,
   sortOrder: 1 | 2 | 3 | 4,
-  pages: string | number,
+  pages: number | "max",
   clean: boolean,
   client: Impit
 }

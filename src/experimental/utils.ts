@@ -1,7 +1,7 @@
 import getBoqUrl from "./boqEndpoint.js";
 import boqParser from "./boqParser.js";
 import type { BoqPaginate, BoqReviews } from "./types.js";
-import type { JsonObject, ParsedReview } from "../types.js"
+import type { JsonArray, ParsedReview } from "../types.js"
 
 /**
  * Fetches a single page of Google Maps reviews using the experimental BOQ (Backend Query) endpoint.
@@ -18,7 +18,7 @@ import type { JsonObject, ParsedReview } from "../types.js"
  * @returns The parsed JSON payload from the BOQ endpoint.
  * @throws Will throw if the HTTP response is not OK or if no valid JSON data is found after stripping the prefix.
  */
-export async function fetchBoqReviews({ placeId, sortOrder, client, paginationToken = "" }: BoqReviews): Promise<JsonObject> {
+export async function fetchBoqReviews({ placeId, sortOrder, client, paginationToken = "" }: BoqReviews): Promise<JsonArray> {
     const apiUrl = getBoqUrl({ placeId, sortOrder, paginationToken });
     const response = await client.fetch(apiUrl);
 
@@ -36,7 +36,12 @@ export async function fetchBoqReviews({ placeId, sortOrder, client, paginationTo
         throw new Error("No valid JSON data found in the response.");
     }
 
-    return JSON.parse(rawJson);
+    const data: unknown = JSON.parse(rawJson);
+    if (!Array.isArray(data)) {
+        throw new Error("Invalid JSON data found in the response.");
+    }
+
+    return data as JsonArray;
 }
 
 /**
@@ -57,7 +62,7 @@ export async function fetchBoqReviews({ placeId, sortOrder, client, paginationTo
  * @returns An array of reviews — either raw nested arrays (if `clean` is `false`) or parsed review objects (if `clean` is `true`).
  *          Returns an empty array if no valid data is found or if an error occurs during pagination.
  */
-export async function paginateBoqReviews({ placeId, sortOrder, pages, clean, client }: BoqPaginate): Promise<ParsedReview[] | unknown> {
+export async function paginateBoqReviews({ placeId, sortOrder, pages, clean, client }: BoqPaginate): Promise<ParsedReview[] | JsonArray> {
     const initialData = await fetchBoqReviews({ placeId, sortOrder, client });
 
     // Validate the structure of the initial response

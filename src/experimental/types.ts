@@ -18,5 +18,3 @@ export interface BoqPaginate {
   clean: boolean,
   client: Impit
 }
-
-export type BoqParserReturn = ParsedReview[] | null | undefined 

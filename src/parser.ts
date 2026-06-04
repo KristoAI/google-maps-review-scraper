@@ -2,13 +2,13 @@ import type { ParsedReview } from "./types.js";
 
 /**
  * Parses an array of reviews and returns a minified JSON string.
- * @param {any[][]} reviews - Array of review data wrappers.
+ * @param {unknown} reviews - Array of review data wrappers.
  * @returns {ParsedReview[]} An array of the parsed reviews.
  */
-export default function parseReviews(reviews: any[][]): ParsedReview[] {
+export default function parseReviews(reviews: unknown): ParsedReview[] {
 	if (!Array.isArray(reviews)) return [];
 
-	const parsedReviews: ParsedReview[] = reviews.map((item) => {
+	const parsedReviews = reviews.map((item) => {
 		const review = Array.isArray(item[0]) ? item[0] : item;
 
 		// Safety check for empty or malformed review wrappers

@@ -52,3 +52,11 @@ export interface SessionToken {
     placeId: string,
     client: Impit
 }
+
+export interface ListUgcPosts {
+    placeId: string,
+    so: 1 | 2 | 3 | 4,
+    pg: string
+    sq: string
+    sessionToken: string,
+}

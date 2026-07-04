@@ -3,6 +3,14 @@ import { Impit } from "impit";
 import { CookieJar } from "tough-cookie";
 import type { HTTPClient } from "./types.js";
 
+/**
+ * Create an HTTP client configured with optional proxy and cookies for scraping.
+ *
+ * @param options          - Client configuration.
+ * @param options.proxy    - Optional proxy settings.
+ * @param options.cookies  - Optional key/value cookie pairs to pre-set.
+ * @returns A configured `Impit` HTTP client instance.
+ */
 export function createClient({ proxy, cookies }: HTTPClient): Impit {
     const cookieJar = new CookieJar();
 

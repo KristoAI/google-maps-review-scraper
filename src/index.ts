@@ -2,6 +2,20 @@ import { SortEnum, type JsonArray, type ParsedReview, type Scraper } from "./typ
 import { validateParams, paginateReviews } from "./utils.js";
 import { createClient } from "./client.js";
 
+/**
+ * Scrape Google Maps reviews for a given place URL.
+ *
+ * @param options                    - Scraper configuration.
+ * @param options.url                - Full Google Maps place URL.
+ * @param options.sort_type          - Sort order: `"most_relevant"`, `"newest"`, `"highest_rating"`, `"lowest_rating"`.
+ * @param options.pages              - Number of pages to fetch (`-1` for all, default).
+ * @param options.clean              - When `true`, return parsed `ParsedReview` objects.
+ * @param options.proxy              - Optional proxy configuration.
+ * @param options.proxy.proxyUrl     - Proxy URL string.
+ * @param options.proxy.ignoreTls    - Bypass TLS errors when using the proxy.
+ * @returns An array of raw review data or parsed `ParsedReview` objects.
+ * @throws {Error} If the URL is invalid or scraping fails.
+ */
 export async function scraper(
   {
     url,

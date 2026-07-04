@@ -2,6 +2,16 @@ import getBoqUrl from "./boqEndpoint.js";
 import boqParser from "./boqParser.js";
 import { SortEnum, type FetchReviewsParams, type JsonArray, type PaginateReviewsParams, type ParsedReview, type Validate } from "./types.js";
 
+/**
+ * Validate scraper input parameters, throwing on invalid values.
+ *
+ * @param options           - The parameters to validate.
+ * @param options.url       - The Google Maps URL (must contain "google.com").
+ * @param options.sort_type - Sort order key that must exist in `SortEnum`.
+ * @param options.pages     - Number of pages (must be a number).
+ * @param options.clean     - Whether to return parsed reviews (must be boolean).
+ * @throws {Error} If any parameter is invalid.
+ */
 export function validateParams({ url, sort_type, pages, clean }: Validate) {
   try {
     const parsedUrl = new URL(url);
@@ -25,6 +35,17 @@ export function validateParams({ url, sort_type, pages, clean }: Validate) {
   }
 }
 
+/**
+ * Fetch a single page of raw reviews from the BOQ endpoint.
+ *
+ * @param options                 - The fetch parameters.
+ * @param options.placeId         - The Google Place ID.
+ * @param options.sortOrder       - Sort order enum value.
+ * @param options.client          - The HTTP client to use.
+ * @param options.paginationToken - Token for fetching the next page.
+ * @returns The raw JSON array response.
+ * @throws {Error} On fetch failure or invalid response format.
+ */
 export async function fetchReviews({ placeId, sortOrder, client, paginationToken = "" }: FetchReviewsParams): Promise<JsonArray> {
   const apiUrl = getBoqUrl({ placeId, sortOrder, paginationToken });
   const response = await client.fetch(apiUrl);
@@ -50,6 +71,12 @@ export async function fetchReviews({ placeId, sortOrder, client, paginationToken
   return data as JsonArray;
 }
 
+/**
+ * Extract the review array and pagination token from a raw BOQ response.
+ *
+ * @param data The raw JSON-parsed response.
+ * @returns An object with `reviews` and `nextToken`, or `null` if extraction fails.
+ */
 function extractPage(data: unknown): { reviews: JsonArray; nextToken: string } | null {
   if (!Array.isArray(data) || data.length < 2) return null;
   const payload = data[1];
@@ -62,6 +89,17 @@ function extractPage(data: unknown): { reviews: JsonArray; nextToken: string } |
   };
 }
 
+/**
+ * Fetch multiple pages of reviews, optionally parsing into structured objects.
+ *
+ * @param options           - Pagination parameters.
+ * @param options.placeId   - The Google Place ID.
+ * @param options.sortOrder - Sort order enum value.
+ * @param options.pages     - Number of pages to fetch (`-1` for all).
+ * @param options.clean     - When `true`, return parsed `ParsedReview` objects.
+ * @param options.client    - The HTTP client to use.
+ * @returns An array of raw review data or parsed `ParsedReview` objects.
+ */
 export async function paginateReviews({ placeId, sortOrder, pages, clean, client }: PaginateReviewsParams): Promise<ParsedReview[] | JsonArray> {
   const initialData = await fetchReviews({ placeId, sortOrder, client });
   const initial = extractPage(initialData);

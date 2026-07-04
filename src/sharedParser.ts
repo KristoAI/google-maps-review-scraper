@@ -19,10 +19,6 @@ export function numberOrZero(value: unknown): number {
   return typeof value === "number" ? value : 0;
 }
 
-export function valueOrNull(value: unknown): unknown | null {
-  return value ?? null;
-}
-
 export function stringOrDefault(value: unknown, fallback: string): string {
   const text = stringOrEmpty(value);
   return text.length > 0 ? text : fallback;

@@ -1,8 +1,7 @@
-import { Impit } from "impit";
+import type { Impit } from "impit";
 import type { CookieJar } from "tough-cookie";
 
 export enum SortEnum {
-    "relevent" = 1, // Maintaining backwards compatibility.
     "relevant" = 1,
     "newest" = 2,
     "highest_rating" = 3,
@@ -25,7 +24,7 @@ export interface ParsedReview {
     response: { text: string | null; time: { published: unknown | null; last_edited: unknown | null } } | null;
 }
 
-export type JsonValue =
+type JsonValue =
     | string
     | number
     | boolean
@@ -35,7 +34,7 @@ export type JsonValue =
 
 export type JsonArray = JsonValue[];
 
-export interface JsonObject {
+interface JsonObject {
     [key: string]: JsonValue;
 };
 
@@ -47,19 +46,6 @@ export interface ProxyConfig {
 export interface HTTPClient {
     proxy: ProxyConfig
     cookies?: Record<string, string> | undefined
-}
-
-export interface SessionToken {
-    placeId: string,
-    client: Impit
-}
-
-export interface ListUgcPosts {
-    placeId: string,
-    sortOrder: 1 | 2 | 3 | 4,
-    page?: string
-    searchQuery?: string
-    sessionToken: string,
 }
 
 export interface RotateClientReturn {
@@ -75,27 +61,30 @@ export interface RotateCookies {
 export interface Validate {
     url: string,
     sort_type: string,
-    pages: number | "max",
+    pages: number,
     clean: boolean
 }
 
-export interface Reviews extends Omit<ListUgcPosts, 'page' | 'searchQuery'> {
-    page: string
-    searchQuery: string
-    client: Impit
+export interface FetchReviewsParams {
+    placeId: string;
+    sortOrder: 1 | 2 | 3 | 4;
+    client: Impit;
+    paginationToken?: string;
 }
 
-export interface Paginate extends Omit<Reviews, 'page'> {
-    clean: boolean
-    pages: number | "max"
+export interface PaginateReviewsParams {
+    placeId: string;
+    sortOrder: 1 | 2 | 3 | 4;
+    pages: number;
+    clean: boolean;
+    client: Impit;
 }
 
 export interface Scraper {
+    url: string;
     sort_type?: string;
-    search_query?: string;
-    pages?: number | "max";
+    pages?: number;
     clean?: boolean;
-    experimental?: boolean;
     cookies?: Record<string, string> | undefined;
     proxy?: {
         proxyUrl?: string | undefined;

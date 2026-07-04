@@ -1,64 +1,65 @@
+import { getPath, numberOrZero, stringOrEmpty, stringOrNull, valueOrNull } from "./sharedParser.js";
 import type { ParsedReview } from "./types.js";
 
 /**
- * Parses an array of reviews and returns a minified JSON string.
- * @param {any[][]} reviews - Array of review data wrappers.
+ * Parses an array of reviews and returns an array of typed reviews.
+ * @param {unknown} reviews - Array of review data wrappers.
  * @returns {ParsedReview[]} An array of the parsed reviews.
  */
-export default function parseReviews(reviews: any[][]): ParsedReview[] {
+export default function parseReviews(reviews: unknown): ParsedReview[] {
 	if (!Array.isArray(reviews)) return [];
 
-	const parsedReviews: ParsedReview[] = reviews.map((item) => {
-		const review = Array.isArray(item[0]) ? item[0] : item;
+	const parsedReviews = reviews.map((item): ParsedReview | null => {
+		const review = Array.isArray(item) && Array.isArray(item[0]) ? item[0] : item;
 
 		// Safety check for empty or malformed review wrappers
-		if (!review) return null;
+		if (!Array.isArray(review)) return null;
 
 		const responseData = review[3];
-		const hasResponse = !!responseData?.[14]?.[0]?.[0];
+		const hasResponse = !!getPath(responseData, [14, 0, 0]);
+		const imagesData = getPath(review, [2, 2]);
 
 		return {
-			review_id: review[0],
+			review_id: stringOrEmpty(review[0]),
 			time: {
-				published: review[1]?.[2],
-				last_edited: review[1]?.[3],
+				published: valueOrNull(getPath(review, [1, 2])),
+				last_edited: valueOrNull(getPath(review, [1, 3])),
 			},
 			author: {
-				name: review[1]?.[4]?.[5]?.[0],
-				profile_url: review[1]?.[4]?.[5]?.[1],
-				url: review[1]?.[4]?.[5]?.[2]?.[0],
-				id: review[1]?.[4]?.[5]?.[3],
+				name: stringOrEmpty(getPath(review, [1, 4, 5, 0])),
+				profile_url: stringOrEmpty(getPath(review, [1, 4, 5, 1])),
+				url: stringOrEmpty(getPath(review, [1, 4, 5, 2, 0])),
+				id: stringOrEmpty(getPath(review, [1, 4, 5, 3])),
 			},
 			review: {
-				rating: review[2]?.[0]?.[0],
-				text: review[2]?.[15]?.[0]?.[0] || null,
-				language: review[2]?.[14]?.[0] || null,
+				rating: numberOrZero(getPath(review, [2, 0, 0])),
+				text: stringOrNull(getPath(review, [2, 15, 0, 0])),
+				language: stringOrNull(getPath(review, [2, 14, 0])),
 			},
-			images: review[2]?.[2]?.map((image: any) => ({
-				id: image[0],
-				url: image[1]?.[6]?.[0],
+			images: Array.isArray(imagesData) ? imagesData.map((image: unknown) => ({
+				id: stringOrEmpty(getPath(image, [0])),
+				url: stringOrEmpty(getPath(image, [1, 6, 0])),
 				size: {
-					width: image[1]?.[6]?.[2]?.[0],
-					height: image[1]?.[6]?.[2]?.[1],
+					width: numberOrZero(getPath(image, [1, 6, 2, 0])),
+					height: numberOrZero(getPath(image, [1, 6, 2, 1])),
 				},
 				location: {
-					friendly: image[1]?.[21]?.[3]?.[7]?.[0],
-					lat: image[1]?.[8]?.[0]?.[2],
-					long: image[1]?.[8]?.[0]?.[1],
+					friendly: stringOrEmpty(getPath(image, [1, 21, 3, 7, 0])),
+					lat: numberOrZero(getPath(image, [1, 8, 0, 2])),
+					long: numberOrZero(getPath(image, [1, 8, 0, 1])),
 				},
-				caption: image[1]?.[21]?.[3]?.[5]?.[0] || null,
-			})) || null,
-			source: review[1]?.[13]?.[0],
+				caption: stringOrNull(getPath(image, [1, 21, 3, 5, 0])),
+			})) : null,
+			source: stringOrEmpty(getPath(review, [1, 13, 0])),
 			response: hasResponse ? {
-				text: responseData[14][0][0] || null,
+				text: stringOrNull(getPath(responseData, [14, 0, 0])),
 				time: {
-					published: responseData[1] || null,
-					last_edited: responseData[2] || null,
+					published: valueOrNull(getPath(responseData, [1])),
+					last_edited: valueOrNull(getPath(responseData, [2])),
 				},
 			} : null
 		};
 	}).filter((r): r is ParsedReview => r !== null); // Remove any failed parses
 
-	// Use null, 0 or no arguments for minified JSON as per your docstring
 	return parsedReviews;
 }

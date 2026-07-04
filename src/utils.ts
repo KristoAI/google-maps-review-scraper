@@ -88,7 +88,7 @@ export async function paginateReviews({ placeId, sortOrder, pages, clean, client
 
       nextToken = page.nextToken;
     } catch (error) {
-      console.error("\x1b[31mError fetching page:\x1b[0m", error);
+      console.error("Error fetching page:", error);
       break;
     }
   }

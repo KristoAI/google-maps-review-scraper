@@ -35,8 +35,7 @@ export async function scraper(
 
     return reviews;
   } catch (e) {
-    console.error("Scraper Error:", e instanceof Error ? e.message : e);
-    return [];
+    throw new Error(`Scraper Error: ${e instanceof Error ? e.message : e}`);
   }
 }
 

@@ -8,7 +8,6 @@ export async function scraper(
     sort_type = "relevant",
     pages = -1,
     clean = false,
-    cookies = undefined,
     proxy: {
       proxyUrl = undefined,
       ignoreTls = false
@@ -26,7 +25,7 @@ export async function scraper(
     }
     const placeId = m[1]?.[1] ? m[1][1] : m[0][1];
 
-    const client = createClient({ proxy: { url: proxyUrl, tls: ignoreTls }, cookies: cookies });
+    const client = createClient({ proxy: { url: proxyUrl, tls: ignoreTls } });
 
     const reviews = await paginateReviews({ placeId, sortOrder: sortValue, pages, clean, client });
 

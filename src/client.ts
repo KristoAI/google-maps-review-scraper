@@ -1,8 +1,9 @@
 
 import { Impit } from "impit";
 import { CookieJar } from "tough-cookie";
+import type { HTTPClient } from "./types.js";
 
-export function createClient(cookies?: Record<string, string>) {
+export function createClient({ proxy, cookies }: HTTPClient): Impit {
     const cookieJar = new CookieJar();
 
     if (cookies) {
@@ -22,6 +23,7 @@ export function createClient(cookies?: Record<string, string>) {
             "Sec-Fetch-Dest": "empty",
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Site": "same-origin",
-        }
+        },
+        ...(proxy && proxy.url && { proxyUrl: proxy.url, ignoreTlsErrors: proxy.tls ?? false })
     });
 }

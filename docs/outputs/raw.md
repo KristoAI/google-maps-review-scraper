@@ -747,7 +747,7 @@ When submitting an issue, kindly include the following details:
 + Steps to reproduce the issue.
 + Any relevant logs, error messages, or screenshots (if applicable).
 
-[^1]: `HexString2` is can be identified to be `HexString2` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protcol-buffer-data-breakdown)
+[^1]: `HexString2` can be identified as `HexString2` from the [place url](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md#protocol-buffer-data-breakdown)
 [^2]: Number of pictures might not return the same number in the contributors profile.
 [^3]: Could return `null` values if the review was not written on google maps itself but fetched from other sources (Tripadvisor, Priceline, Trip.com).
 [^4]: Value is not included if the review was not written on google maps itself but fetched from other sources (Tripadvisor, Priceline, Trip.com).

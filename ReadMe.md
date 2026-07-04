@@ -12,6 +12,7 @@
 ## Frameworks/Technologies
 
 ![](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 
 </div>
 
@@ -38,44 +39,40 @@ Install with yarn
 ```ts
 import { scraper } from "google-maps-review-scraper";
 
-const reviews = await scraper("url", {
+const reviews = await scraper({
+  url: "https://www.google.com/maps/place/...",
   sort_type: "relevant",
-  search_query: "search_query",
-  pages: "pages",
+  pages: 5,
   clean: false,
-  experimental: false,
-  cookies: { "__Secure-1PSID": "...", "__Secure-1PSIDTS": "..." },
+  proxy: { proxyUrl: "http://proxy:8080", ignoreTls: false },
 });
 ```
 
 ### Arguments
 
-`url` - `string`: A google maps place url as explained [here](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md)
+All arguments are passed as a single object:
 
-`sort_type` - `string`: The sort parameter (`"relevant"`, `"newest"`, `"highest_rating"`, `"lowest_rating"`). Defaults to `"relevant"`
+`url` - `string` (required): A google maps place URL as explained [here](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/urls/place.md)
 
-`search_query` - `string`: Search query to search in reviews. Defaults to nothing.
+`sort_type` - `string`: Sort order (`"relevant"`, `"newest"`, `"highest_rating"`, `"lowest_rating"`). Defaults to `"relevant"`.
 
-`pages` - `integer`: Number of pages that will be scraped. Will return less reviews if no more reviews exist. Defaults to max pages.
+`pages` - `number`: Number of pages to scrape (each page yields ~10 reviews). Defaults to all available pages. Set to `-1` for unlimited.
 
-`clean` - `boolean`: Whether to return a cleaned output or not. Defaults to false.
+`clean` - `boolean`: Whether to return a cleaned/parsed output (`ParsedReview[]`) or raw JSON (`JsonArray`). Defaults to `false`.
 
-`experimental` - `boolean`: Whether to use the experimental `GetLocalBoqProxy` endpoint instead of the default `listugcposts` endpoint. Defaults to false. Note that **search queries are completely ignored** when this is enabled!
+`proxy.proxyUrl` - `string`: Optional HTTP proxy URL.
 
-`cookies` - `object`: Optional object containing `__Secure-1PSID` and `__Secure-1PSIDTS` cookies for authentication. Only used when calling the default `listugcposts` endpoint.
-
-> [!NOTE]
-> `sort_type`, `search_query`, `pages`, `clean`, `experimental`, and `cookies` are all optional parameters which should be included within the object literals (the curly brackets).
+`proxy.ignoreTls` - `boolean`: Whether to ignore TLS errors on the proxy. Defaults to `false`.
 
 ### Returns
 
-`reviews` - `Promise<Array|number>`: A promise that resolves to an array containing the reviews in these [formats](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/outputs/output.md) depending on the value of `clean` or the number `0` if no reviews exist.
+`reviews` - `Promise<ParsedReview[] | JsonArray>`: A promise that resolves to an array of reviews in these [formats](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/outputs/output.md) depending on the value of `clean`, or an empty array `[]` if no reviews exist.
 
 ---
 
-## Documentation of API's/URL's used
+## Documentation
 
-All documentation related to API's and URL's used in this project can be found in the [docs](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/) folder divided into endpoints for API's and urls for URL's. Note that everything included here was based on my research, so errors could be present. A pull request is always welcome (see [contributing](#contributing))
+All documentation related to endpoints and URL formats used in this project can be found in the [docs](https://github.com/YasogaN/google-maps-review-scraper/blob/main/docs/) folder. This module uses the `GetLocalBoqProxy` endpoint to scrape reviews. Note that everything included here was based on my research, so errors could be present. A pull request is always welcome (see [contributing](#contributing)).
 
 ---
 

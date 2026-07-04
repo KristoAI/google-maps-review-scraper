@@ -8,21 +8,11 @@ import type { HTTPClient } from "./types.js";
  *
  * @param options          - Client configuration.
  * @param options.proxy    - Optional proxy settings.
- * @param options.cookies  - Optional key/value cookie pairs to pre-set.
  * @returns A configured `Impit` HTTP client instance.
  */
-export function createClient({ proxy, cookies }: HTTPClient): Impit {
-    const cookieJar = new CookieJar();
-
-    if (cookies) {
-        for (const [key, value] of Object.entries(cookies)) {
-            // Defaulting domain to google.com since we are making requests there
-            cookieJar.setCookieSync(`${key}=${value}; Domain=google.com`, 'https://www.google.com');
-        }
-    }
-
+export function createClient({ proxy }: HTTPClient): Impit {
     return new Impit({
-        cookieJar: cookieJar,
+        cookieJar: new CookieJar(),
         browser: "chrome",
         headers: {
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",

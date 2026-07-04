@@ -45,7 +45,6 @@ export interface ProxyConfig {
 
 export interface HTTPClient {
     proxy: ProxyConfig
-    cookies?: Record<string, string> | undefined
 }
 
 export interface RotateClientReturn {
